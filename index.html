@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Tâmara Mannis | Psicóloga</title>
+  <meta name="description" content="Psicoterapia individual, presencial e online. Agende uma conversa inicial.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       1) CORES E FONTES — mude aqui e o site inteiro muda
+       ========================================================== */
+    :root {
+      --cor-fundo:       #F4F7F6;  /* fundo geral da página */
+      --cor-fundo-suave: #5a6794;  /* seções alternadas */
+      --cor-texto:       #000000;  /* texto e títulos */
+      --cor-texto-leve:  #000000;  /* textos secundários */
+      --cor-destaque:    #8A5A83;  /* botões e links (ameixa suave) */
+      --cor-destaque-escura: #6F446A;
+
+      --fonte-titulo: "Newsreader", Georgia, serif;
+      --fonte-texto:  "Figtree", system-ui, sans-serif;
+    }
+
+    /* ==========================================================
+       2) ESTILO BASE — normalmente não precisa mexer daqui pra baixo
+       ========================================================== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--fonte-texto);
+      color: var(--cor-texto);
+      background: var(--cor-fundo);
+      line-height: 1.65;
+      font-size: 1.05rem;
+    }
+    img { max-width: 100%; display: block; }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--cor-destaque);
+      outline-offset: 3px;
+    }
+
+    h1, h2, h3 { font-family: var(--fonte-titulo); font-weight: 500; line-height: 1.2; }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+    h2 { font-size: clamp(1.7rem, 3.5vw, 2.3rem); margin-bottom: 1rem; }
+    h3 { font-size: 1.3rem; margin-bottom: .5rem; }
+    p  { max-width: 62ch; color: var(--cor-texto-leve); }
+    p + p { margin-top: 1rem; }
+
+    .container { width: min(1080px, 100% - 2.5rem); margin-inline: auto; }
+    section { padding: 5rem 0; }
+    .fundo-suave { background: var(--cor-fundo-suave); }
+
+    /* Botão */
+    .botao {
+      display: inline-block;
+      background: var(--cor-destaque);
+      color: #fff;
+      padding: .9rem 1.8rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background .2s;
+    }
+    .botao:hover { background: var(--cor-destaque-escura); }
+
+    /* ==========================================================
+       ESPAÇOS PARA IMAGENS
+       Cada .espaco-imagem é um "quadro". A imagem preenche o quadro.
+       Enquanto não houver foto, aparece só um fundo colorido.
+       ========================================================== */
+    .espaco-imagem {
+      background: var(--cor-fundo-suave);
+      overflow: hidden;
+      position: relative;
+    }
+    .espaco-imagem img { width: 100%; height: 100%; object-fit: cover; }
+    .espaco-imagem.arco   { border-radius: 999px 999px 24px 24px; aspect-ratio: 4 / 5; }
+    .espaco-imagem.quadro { border-radius: 24px; aspect-ratio: 4 / 3; }
+
+    /* Cabeçalho */
+    header { padding: 1.2rem 0; }
+    header .container { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .logo { font-family: var(--fonte-titulo); font-size: 1.3rem; text-decoration: none; color: var(--cor-texto); }
+    nav { display: flex; gap: 1.5rem; }
+    nav a { color: var(--cor-texto-leve); text-decoration: none; font-size: .95rem; }
+    nav a:hover { color: var(--cor-destaque); }
+
+    /* Hero (primeira dobra) */
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .hero p { font-size: 1.15rem; margin: 1.2rem 0 2rem; }
+
+    /* Sobre */
+    .sobre .container {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    /* Cartões de atendimento */
+    .grade-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+    .cartao { background: var(--cor-fundo); padding: 2rem; border-radius: 20px; }
+
+    /* Passos (aqui a numeração faz sentido: é uma sequência) */
+    .passos { list-style: none; counter-reset: passo; margin-top: 2rem; display: grid; gap: 1.5rem; }
+    .passos li { counter-increment: passo; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; }
+    .passos li::before {
+      content: counter(passo);
+      font-family: var(--fonte-titulo);
+      font-size: 1.6rem;
+      color: var(--cor-destaque);
+    }
+
+    /* Perguntas frequentes */
+    details { border-bottom: 1px solid var(--cor-fundo-suave); padding: 1.1rem 0; max-width: 720px; }
+    summary { cursor: pointer; font-weight: 600; color: var(--cor-texto); }
+    details p { margin-top: .7rem; }
+
+    /* Contato */
+    .contato { text-align: center; }
+    .contato p { margin-inline: auto; margin-bottom: 2rem; }
+
+    footer { padding: 2rem 0; text-align: center; font-size: .9rem; color: var(--cor-texto-leve); }
+
+    /* Celular */
+    @media (max-width: 800px) {
+      nav { display: none; }
+      .hero .container, .sobre .container, .grade-tres { grid-template-columns: 1fr; }
+      .hero .espaco-imagem { max-width: 320px; }
+      section { padding: 3.5rem 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================================
+       CABEÇALHO
+       ========================================================== -->
+  <header>
+    <div class="container">
+      <a class="logo" href="#inicio">Tâmara Mannis</a>
+      <nav>
+        <a href="#sobre">Sobre</a>
+        <a href="#especializacao">Especialização</a>
+        <a href="#atendimento">Atendimento</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#duvidas">Dúvidas</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ==========================================================
+         SEÇÃO 1 — INÍCIO (a primeira coisa que a pessoa vê)
+         ========================================================== -->
+    <section class="hero" id="inicio">
+      <div class="container">
+
+        <div>
+          <h1>Um espaço seguro para cuidar de você!</h1>
+
+          <p>Psicoterapia individual para adultos, Online para todo o Brasil.</p>
+
+          <a class="botao" href="https://wa.me/557991922204" target="_blank" rel="noopener">Agendar uma conversa</a>
+        </div>
+
+        <div class="espaco-imagem arco">
+          <img src="imagens/Perfil.jpg" alt="Tâmara sorrindo no consultório" onerror="this.remove()">
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==========================================================
+         SEÇÃO 2 — SOBRE
+         ========================================================== -->
+    <section class="sobre fundo-suave" id="sobre">
+      <div class="container">
+
+        <!-- 🖼️ IMAGEM: outra foto (consultório, retrato, detalhe do ambiente) -->
+        <div class="espaco-imagem quadro">
+          <img src="imagens/foto-sobre.jpg" alt="Consultório de psicologia" onerror="this.remove()">
+        </div>
+
+        <div>
+          <h2>Sobre mim</h2>
+
+          <p>Sou Tâmara Mannis, psicóloga clínica com mais de 20 anos de experiência, graduada pela Universidade Federal de Sergipe e especialista em Psicologia Clínica.</p>
+          <p>Minha atuação é fundamentada na Psicologia Analítica Junguiana, com atendimento online individual, conjugal e familiar.</p>
+          <p>Tenho experiência no tratamento de ansiedade, depressão, pânico, bipolaridade, TDAH e questões relacionais. Ofereço um espaço de escuta qualificada, acolhimento e cuidado, buscando promover bem-estar e qualidade de vida.</p>
+
+          <p><strong>CRP 07/46537</strong></p>
+        </div>
+
+      </div>
+    </section>
+    <section class="sobre" id="especializacao">
+      <div class="container">
+        <div>
+          <h2>Especializações</h2>
+          <p>•	Especialização em Psicologia Conjugal e Familiar: Dedicada a mediar conflitos e fortalecer os vínculos afetivos e familiares.</p>
+          <p>•	Formação em Psicologia Analítica Junguiana e Especialização em Teoria e Psicoterapia Analítica: Uma abordagem que olha para o indivíduo de forma integral, integrando os aspectos conscientes e inconscientes para promover o autoconhecimento profundo.</p>
+          <p>•	Título de Especialista em Psicologia Clínica certificado pelo CRPRS.</p>
+
+        </div>
+
+        <div class="espaco-imagem quadro">
+          <img src="imagens/foto-sobre.jpg" alt="Consultório de psicologia" onerror="this.remove()">
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================================
+         SEÇÃO 3 — ATENDIMENTO (o que você oferece)
+         Para adicionar mais um cartão, copie um bloco inteiro
+         <div class="cartao"> ... </div> e cole logo abaixo.
+         Dica: use 3 ou 6 cartões para a grade ficar alinhada.
+         ========================================================== -->
+    <section class="fundo-suave" id="atendimento">
+      <div class="container">
+        <h2>Como posso ajudar</h2>
+        <p>Atendimento para quem está passando por momentos como estes:</p>
+
+        <div class="grade-tres">
+
+          <!-- CARTÃO 1 -->
+          <div class="cartao">
+            <h3>Ansiedade e estresse</h3>
+            <p>Aprender a lidar com preocupação constante, cansaço e pensamentos acelerados.</p>  <!-- ✏️ texto -->
+          </div>
+
+          <!-- CARTÃO 2 -->
+          <div class="cartao">
+            <h3>Autoestima e autoconhecimento</h3>
+            <p>Entender seus padrões e construir uma relação mais gentil com você mesma(o).</p>
+          </div>
+
+          <!-- CARTÃO 3 -->
+          <div class="cartao">
+            <h3>Relacionamentos e transições</h3>
+            <p>Apoio em mudanças de carreira, términos, luto e novas fases da vida.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==========================================================
+         SEÇÃO 4 — COMO FUNCIONA (passos em sequência)
+         Para adicionar um passo, copie um <li> inteiro.
+         A numeração (1, 2, 3...) é automática.
+         ========================================================== -->
+    <section id="como-funciona">
+      <div class="container">
+        <h2>Como funciona</h2>
+
+        <ol class="passos">
+          <li>
+            <div>
+              <h3>Conversa inicial</h3>
+              <p>Você me conta o que a trouxe até aqui e tira suas dúvidas. Sem compromisso.</p>  <!-- ✏️ texto -->
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Primeira sessão</h3>
+              <p>Começamos a entender sua história e definimos juntos os objetivos da terapia.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Acompanhamento semanal</h3>
+              <p>Sessões de 60 minutos, por vídeo, no mesmo dia e horário.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- ==========================================================
+         SEÇÃO 5 — PERGUNTAS FREQUENTES
+         Para adicionar uma pergunta, copie um bloco <details> inteiro.
+         <summary> é a pergunta; o <p> é a resposta.
+         ========================================================== -->
+    <section class="duvidas fundo-suave" id="duvidas">
+      <div class="container">
+        <h2>Dúvidas frequentes</h2>
+
+        <details>
+          <summary>Quanto custa a sessão?</summary>
+          <p>O valor da sessão é R$ 120,00. Informo as formas de pagamento na conversa inicial.</p>
+        </details>
+
+        <details>
+          <summary>Atende online?</summary>
+          <p>Sim. As sessões online acontecem por vídeo, com a mesma qualidade do atendimento presencial.</p>
+        </details>
+
+        <details>
+          <summary>Aceita convênio?</summary>
+          <p>Não atendo por convênio, mas emito recibo para pedido de reembolso, quando o plano oferece essa opção.</p>
+        </details>
+      </div>
+    </section>
+
+
+    <!-- ==========================================================
+         SEÇÃO 6 — CONTATO
+         ========================================================== -->
+    <section class="contato" id="contato">
+      <div class="container">
+        <h2>Vamos conversar?</h2>
+        <p>Dar o primeiro passo costuma ser a parte mais difícil. Me escreva e eu respondo em até 24 horas.</p>
+
+        <!-- ✏️ LINK: mesmo número de WhatsApp do topo da página -->
+        <a class="botao" href="https://wa.me/557991922204" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+
+        <!-- ✏️ TEXTO: e-mail, endereço e redes sociais (apague o que não usar) -->
+        <p style="margin-top: 2rem;">tamaramannis@gmail.com<br>Rua Exemplo, 123, Sua Cidade<br>@tamaramannispsicologa</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================
+       RODAPÉ
+       ========================================================== -->
+  <footer>
+    <div class="container">
+      © 2026 Tâmara Mannis Psicóloga · CRP 07/46537
+    </div>
+  </footer>
+
+</body>
+</html>
