@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Tâmara Mannis | Psicóloga</title>
+  <script>document.documentElement.classList.add('js');</script>
   <meta name="description" content="Psicoterapia individual, presencial e online. Agende uma conversa inicial.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,17 +82,26 @@
     }
     .espaco-imagem img { width: 100%; height: 100%; object-fit: cover; }
     .espaco-imagem.arco   { border-radius: 999px 999px 24px 24px; aspect-ratio: 4 / 5; }
-    .espaco-imagem.quadro { border-radius: 24px; aspect-ratio: 4 / 3; }
+    .espaco-imagem.quadro { border-radius: 24px; aspect-ratio: 3 / 3; }
+    .espaco-imagem.retangulo { border-radius: 24px; aspect-ratio: 2 / 3; }
 
-    /* Cabeçalho */
-    header { padding: 1.2rem 0; }
+    header { padding: 1.2rem 0; position: relative; z-index: 10; }
+
+    .menu-botao { display: none; background: none; border: 0; cursor: pointer; padding: .5rem; }
+    .menu-botao span {
+      display: block; width: 26px; height: 2px; margin: 6px 0;
+      background: var(--cor-texto);
+      transition: transform .3s, opacity .3s;
+    }
+    .menu-botao[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-botao[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .menu-botao[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
     header .container { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
     .logo { font-family: var(--fonte-titulo); font-size: 1.3rem; text-decoration: none; color: var(--cor-texto); }
     nav { display: flex; gap: 1.5rem; }
     nav a { color: var(--cor-texto-leve); text-decoration: none; font-size: .95rem; }
     nav a:hover { color: var(--cor-destaque); }
 
-    /* Hero (primeira dobra) */
     .hero .container {
       display: grid;
       grid-template-columns: 1.1fr .9fr;
@@ -100,19 +110,17 @@
     }
     .hero p { font-size: 1.15rem; margin: 1.2rem 0 2rem; }
 
-    /* Sobre */
-    .sobre .container {
+    .sobre .container,
+    .como-funciona .container {
       display: grid;
       grid-template-columns: .8fr 1.2fr;
       gap: 3rem;
       align-items: center;
     }
 
-    /* Cartões de atendimento */
     .grade-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
     .cartao { background: var(--cor-fundo); padding: 2rem; border-radius: 20px; }
 
-    /* Passos (aqui a numeração faz sentido: é uma sequência) */
     .passos { list-style: none; counter-reset: passo; margin-top: 2rem; display: grid; gap: 1.5rem; }
     .passos li { counter-increment: passo; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; }
     .passos li::before {
@@ -122,12 +130,10 @@
       color: var(--cor-destaque);
     }
 
-    /* Perguntas frequentes */
     details { border-bottom: 1px solid var(--cor-fundo-suave); padding: 1.1rem 0; max-width: 720px; }
     summary { cursor: pointer; font-weight: 600; color: var(--cor-texto); }
     details p { margin-top: .7rem; }
 
-    /* Contato */
     .contato { text-align: center; }
     .contato p { margin-inline: auto; margin-bottom: 2rem; }
 
@@ -135,10 +141,49 @@
 
     /* Celular */
     @media (max-width: 800px) {
-      nav { display: none; }
-      .hero .container, .sobre .container, .grade-tres { grid-template-columns: 1fr; }
-      .hero .espaco-imagem { max-width: 320px; }
+
+      .menu-botao { display: block; }
+      nav {
+        display: none;
+        position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: var(--cor-fundo);
+        padding: .5rem 1.25rem 1rem;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, .12);
+      }
+      nav.aberto { display: flex; }
+      nav a { padding: .85rem 0; font-size: 1.05rem; border-bottom: 1px solid rgba(0, 0, 0, .1); }
+
+      .hero .container, .sobre .container, .como-funciona .container, .grade-tres { grid-template-columns: 1fr; }
+
+      .hero .espaco-imagem,
+      .sobre .espaco-imagem,
+      .como-funciona .espaco-imagem { max-width: 320px; margin-inline: auto; }
+
       section { padding: 3.5rem 0; }
+    }
+
+    /* ==========================================================
+       ANIMAÇÃO AO ROLAR A PÁGINA
+       Cada seção aparece suavemente (sobe e ganha opacidade)
+       quando entra na tela. Para ajustar:
+         - velocidade: mude os .9s abaixo
+         - distância da subida: mude o 40px
+       A classe "js" só existe se o JavaScript funcionar; sem ele,
+       tudo aparece normalmente (nada fica escondido).
+       ========================================================== */
+    .js .revelar {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .9s ease, transform .8s ease;
+    }
+    .js .revelar.visivel {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .js .revelar { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
@@ -151,7 +196,10 @@
   <header>
     <div class="container">
       <a class="logo" href="#inicio">Tâmara Mannis</a>
-      <nav>
+      <button class="menu-botao" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu">
         <a href="#sobre">Sobre</a>
         <a href="#especializacao">Especialização</a>
         <a href="#atendimento">Atendimento</a>
@@ -171,9 +219,7 @@
       <div class="container">
 
         <div>
-          <h1>Um espaço seguro para cuidar de você!</h1>
-
-          <p>Psicoterapia individual para adultos, Online para todo o Brasil.</p>
+          <h1>Psicoterapia com Abordagem Analítica Junguiana, Online para todo o Brasil e para Brasileiros no Exterior.</h1>
 
           <a class="botao" href="https://wa.me/557991922204" target="_blank" rel="noopener">Agendar uma conversa</a>
         </div>
@@ -193,16 +239,16 @@
       <div class="container">
 
         <!-- 🖼️ IMAGEM: outra foto (consultório, retrato, detalhe do ambiente) -->
-        <div class="espaco-imagem quadro">
+        <div class="espaco-imagem retangulo">
           <img src="imagens/SobreMim.jpg" alt="Consultório de psicologia" onerror="this.remove()">
         </div>
 
         <div>
           <h2>Sobre mim</h2>
 
-          <p>Sou Tâmara Mannis, psicóloga clínica com mais de 20 anos de experiência, graduada pela Universidade Federal de Sergipe e especialista em Psicologia Clínica.</p>
-          <p>Minha atuação é fundamentada na Psicologia Analítica Junguiana, com atendimento online individual, conjugal e familiar.</p>
-          <p>Tenho experiência no tratamento de ansiedade, depressão, pânico, bipolaridade, TDAH e questões relacionais. Ofereço um espaço de escuta qualificada, acolhimento e cuidado, buscando promover bem-estar e qualidade de vida.</p>
+          <p>Universidade Federal de Sergipe, com Título de Especialista em Psicologia Clínica certificado pelo Conselho Regional de Psicologia do Rio Grande do Sul. (Esse título é muito importante e quase impossível de conseguir... precisa estar na capa). Talvez fosse interessante mesmo trocar o texto que você colocou por esse: Sou Tâmara Mannis, psicóloga clínica com mais de 20 anos de experiência em psicoterapia individual, conjugal e familiar. Graduada pela Universidade Federal de Sergipe em 2005, possuo o Título de Especialista em Psicologia Clínica certificado pelo Conselho Regional de Psicologia do Rio Grande do Sul.</p>
+          <p>Através do atendimento online, ofereço suporte especializado, seguro e acolhedor para pacientes de diversas localidades. Minha prática é fundamentada na Psicologia Analítica Junguiana — mantendo-me sempre atualizada através de cursos de extensão em mitologia, análise de sonhos e participações em congressos e jornadas.</p>
+          <p>Tenho ampla experiência no tratamento de depressão, ansiedade, pânico, bipolaridade, TDAH e crises relacionais. Meu compromisso é proporcionar um espaço de escuta qualificada para que você possa superar desafios e resgatar sua qualidade de vida, onde quer que você esteja.</p>
 
           <p><strong>CRP 07/46537</strong></p>
         </div>
@@ -214,13 +260,13 @@
         <div>
           <h2>Especializações</h2>
           <p>•	Especialização em Psicologia Conjugal e Familiar: Dedicada a mediar conflitos e fortalecer os vínculos afetivos e familiares.</p>
-          <p>•	Formação em Psicologia Analítica Junguiana e Especialização em Teoria e Psicoterapia Analítica: Uma abordagem que olha para o indivíduo de forma integral, integrando os aspectos conscientes e inconscientes para promover o autoconhecimento profundo.</p>
+          <p>•	Formação em Psicologia Analítica Junguiana e Especialização em Teoria e Psicoterapia Analítica: Uma abordagem que olha para o indivíduo de forma ampla e complexa, integrando os aspectos conscientes e inconscientes para promover o autoconhecimento profundo.</p>
           <p>•	Título de Especialista em Psicologia Clínica certificado pelo CRPRS.</p>
 
         </div>
 
         <div class="espaco-imagem quadro">
-          <img src="imagens/Atendimento.jpg" alt="Consultório de psicologia" onerror="this.remove()">
+          <img src="imagens/Livro.jpg" alt="Consultório de psicologia" onerror="this.remove()">
         </div>
       </div>
 
@@ -267,9 +313,13 @@
          Para adicionar um passo, copie um <li> inteiro.
          A numeração (1, 2, 3...) é automática.
          ========================================================== -->
-    <section id="como-funciona">
+    <section class="como-funciona" id="como-funciona">
       <div class="container">
-        <h2>Como funciona</h2>
+        <div class="espaco-imagem quadro">
+          <img src="imagens/ComoFunciona.jpg" alt="Consultório de psicologia" onerror="this.remove()">
+        </div>
+        <div>
+          <h2>Como funciona</h2>
 
         <ol class="passos">
           <li>
@@ -291,6 +341,7 @@
             </div>
           </li>
         </ol>
+        </div>
       </div>
     </section>
 
@@ -326,10 +377,8 @@
         <h2>Vamos conversar?</h2>
         <p>Dar o primeiro passo costuma ser a parte mais difícil. Me escreva e eu respondo em até 24 horas.</p>
 
-        <!-- ✏️ LINK: mesmo número de WhatsApp do topo da página -->
         <a class="botao" href="https://wa.me/557991922204" target="_blank" rel="noopener">Chamar no WhatsApp</a>
 
-        <!-- ✏️ TEXTO: e-mail, endereço e redes sociais (apague o que não usar) -->
         <p style="margin-top: 2rem;">tamaramannis@gmail.com<br>Domicílio Fiscal - CNPJ: 15.282.321/0001-01<br>Rua Eng. Hernan Centurion, 540 - Jardins, Aracaju<br>@tamaramannispsicologa</p>
       </div>
     </section>
@@ -344,6 +393,55 @@
       © 2026 Tâmara Mannis Psicóloga · CRP 07/46537
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var itens = document.querySelectorAll('main section .container');
+
+      if (!('IntersectionObserver' in window)) {
+        itens.forEach(function (el) { el.classList.add('visivel'); });
+        return;
+      }
+
+      var observador = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          if (entrada.isIntersecting) {
+            entrada.target.classList.add('visivel');
+            observador.unobserve(entrada.target); // anima só uma vez
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      itens.forEach(function (el) {
+        el.classList.add('revelar');
+        observador.observe(el);
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var botao = document.querySelector('.menu-botao');
+      var menu = document.getElementById('menu');
+      if (!botao || !menu) return;
+
+      function definir(aberto) {
+        menu.classList.toggle('aberto', aberto);
+        botao.setAttribute('aria-expanded', aberto);
+        botao.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+      }
+
+      botao.addEventListener('click', function () {
+        definir(!menu.classList.contains('aberto'));
+      });
+      menu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () { definir(false); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') definir(false);
+      });
+    })();
+  </script>
 
 </body>
 </html>
