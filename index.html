@@ -96,8 +96,7 @@
     .menu-botao[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
     .menu-botao[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
     .menu-botao[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-    header .container { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    .logo { font-family: var(--fonte-titulo); font-size: 1.3rem; text-decoration: none; color: var(--cor-texto); }
+    header .container { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; }
     nav { display: flex; gap: 1.5rem; }
     nav a { color: var(--cor-texto-leve); text-decoration: none; font-size: .95rem; }
     nav a:hover { color: var(--cor-destaque); }
@@ -110,6 +109,9 @@
     }
     .hero p { font-size: 1.15rem; margin: 1.2rem 0 2rem; }
 
+    /* Logo (primeira foto): para diminuir ou aumentar, mude o 360px */
+    .hero .logo-hero { max-width: 360px; margin-bottom: 1.5rem; }
+
     .sobre .container,
     .como-funciona .container {
       display: grid;
@@ -119,28 +121,96 @@
     }
 
     .grade-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
-    .cartao { background: var(--cor-fundo); padding: 2rem; border-radius: 20px; }
+    .cartao { background: var(--cor-fundo-suave); padding: 2rem; border-radius: 20px; }
 
+    /* Números dos passos (Como funciona): escuros para destacar */
     .passos { list-style: none; counter-reset: passo; margin-top: 2rem; display: grid; gap: 1.5rem; }
     .passos li { counter-increment: passo; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; }
     .passos li::before {
       content: counter(passo);
       font-family: var(--fonte-titulo);
       font-size: 1.6rem;
-      color: var(--cor-destaque);
+      font-weight: 600;
+      color: var(--cor-texto);
     }
 
     details { border-bottom: 1px solid var(--cor-fundo-suave); padding: 1.1rem 0; max-width: 720px; }
     summary { cursor: pointer; font-weight: 600; color: var(--cor-texto); }
     details p { margin-top: .7rem; }
 
+    /* ==========================================================
+       CARROSSEL DE AVALIAÇÕES
+       Rola na horizontal: com o dedo no celular, com as setas
+       (ou o mouse/teclado) no computador.
+       Cada caixa tem o tamanho exato da imagem dentro dela.
+       Para mudar a largura das fotos, altere o 300px.
+       ========================================================== */
+    .carrossel-trilha {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: .5rem 0 1rem;
+      margin-top: 2rem;
+      scrollbar-width: thin;
+    }
+    .carrossel-trilha:focus-visible { outline: 3px solid var(--cor-texto); outline-offset: 3px; }
+    .carrossel-slide {
+      flex: 0 0 min(440px, 88%);
+      scroll-snap-align: start;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+    .carrossel-slide img { width: 100%; height: auto; }
+
+    /* Foto ampliada ao clicar (tela cheia, fundo escurecido) */
+    .ampliada {
+      border: 0;
+      background: transparent;
+      max-width: 96vw;
+      max-height: 96vh;
+      margin: auto;
+      overflow: visible;
+    }
+    .ampliada::backdrop { background: rgba(0, 0, 0, .85); }
+    .ampliada img {
+      width: auto; height: auto;
+      max-width: 92vw; max-height: 86vh;
+      border-radius: 12px;
+      margin-inline: auto;
+    }
+    .ampliada-fechar {
+      display: block;
+      margin: 1rem auto 0;
+      padding: .6rem 1.6rem;
+      border: 0; border-radius: 999px;
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      font: inherit; font-weight: 600;
+      cursor: pointer;
+    }
+    .carrossel-controles { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
+    .carrossel-seta {
+      width: 48px; height: 48px;
+      border: 0; border-radius: 50%;
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+      font-size: 1.6rem; line-height: 1;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .carrossel-seta:hover { background: var(--cor-destaque-escura); color: #fff; }
+
     .contato { text-align: center; }
     .contato p { margin-inline: auto; margin-bottom: 2rem; }
 
     footer { padding: 2rem 0; text-align: center; font-size: .9rem; color: var(--cor-texto-leve); }
 
-    /* Celular */
-    @media (max-width: 800px) {
+    /* Menu no celular e tablet pequeno (o menu tem muitos itens,
+       por isso vira "hambúrguer" já abaixo de 960px) */
+    @media (max-width: 960px) {
 
       .menu-botao { display: block; }
       nav {
@@ -153,6 +223,10 @@
       }
       nav.aberto { display: flex; }
       nav a { padding: .85rem 0; font-size: 1.05rem; border-bottom: 1px solid rgba(0, 0, 0, .1); }
+    }
+
+    /* Celular */
+    @media (max-width: 800px) {
 
       .hero .container, .sobre .container, .como-funciona .container, .grade-tres { grid-template-columns: 1fr; }
 
@@ -195,16 +269,17 @@
        ========================================================== -->
   <header>
     <div class="container">
-      <a class="logo" href="#inicio">Tâmara Mannis</a>
       <button class="menu-botao" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
         <span></span><span></span><span></span>
       </button>
       <nav id="menu">
         <a href="#sobre">Sobre</a>
         <a href="#especializacao">Especialização</a>
+        <a href="#sonhos">Sonhos</a>
         <a href="#atendimento">Atendimento</a>
         <a href="#como-funciona">Como funciona</a>
         <a href="#duvidas">Dúvidas</a>
+        <a href="#avaliacoes">Avaliações</a>
         <a href="#contato">Contato</a>
       </nav>
     </div>
@@ -213,13 +288,32 @@
   <main>
 
     <!-- ==========================================================
+         CORES DAS SEÇÕES (alternam de cima para baixo):
+         Início ........ creme
+         Sobre ......... azul
+         Especializações creme
+         Sonhos ........ azul
+         Atendimento ... creme
+         Como funciona . azul
+         Dúvidas ....... creme
+         Avaliações .... azul
+         Contato ....... creme
+         (azul = class="fundo-suave"; creme = sem classe de fundo)
+         ========================================================== -->
+
+    <!-- ==========================================================
          SEÇÃO 1 — INÍCIO (a primeira coisa que a pessoa vê)
          ========================================================== -->
     <section class="hero" id="inicio">
       <div class="container">
-
         <div>
-          <h1>Psicoterapia com Abordagem Analítica Junguiana, Online para todo o Brasil e para Brasileiros no Exterior.</h1>
+          <!-- 🖼️ LOGO: fica acima do título -->
+          <div class="espaco-imagem logo-hero">
+            <img src="imagens/Logo.png" alt="Tâmara sorrindo no consultório" onerror="this.remove()">
+          </div>
+
+          <h1>Um espaço seguro para cuidar de você!</h1>
+          <p>Psicoterapia com Abordagem Analítica Junguiana, Online para todo o Brasil e para Brasileiros no Exterior.</p>
 
           <a class="botao" href="https://wa.me/557991922204" target="_blank" rel="noopener">Agendar uma conversa</a>
         </div>
@@ -243,21 +337,20 @@
           <img src="imagens/SobreMim.jpg" alt="Consultório de psicologia" onerror="this.remove()">
         </div>
 
-        <div>
+        <div strong style='font-size: 22px;'>
           <h2>Sobre mim</h2>
 
-          <p>Universidade Federal de Sergipe, com Título de Especialista em Psicologia Clínica certificado pelo Conselho Regional de Psicologia do Rio Grande do Sul. (Esse título é muito importante e quase impossível de conseguir... precisa estar na capa). Talvez fosse interessante mesmo trocar o texto que você colocou por esse: Sou Tâmara Mannis, psicóloga clínica com mais de 20 anos de experiência em psicoterapia individual, conjugal e familiar. Graduada pela Universidade Federal de Sergipe em 2005, possuo o Título de Especialista em Psicologia Clínica certificado pelo Conselho Regional de Psicologia do Rio Grande do Sul.</p>
+          <p>Sou Tâmara Mannis, psicóloga clínica com mais de 20 anos de experiência em psicoterapia individual, conjugal e familiar. Graduada pela Universidade Federal de Sergipe em 2005, possuo o Título de Especialista em Psicologia Clínica certificado pelo CRPRS.</p>
           <p>Através do atendimento online, ofereço suporte especializado, seguro e acolhedor para pacientes de diversas localidades. Minha prática é fundamentada na Psicologia Analítica Junguiana — mantendo-me sempre atualizada através de cursos de extensão em mitologia, análise de sonhos e participações em congressos e jornadas.</p>
           <p>Tenho ampla experiência no tratamento de depressão, ansiedade, pânico, bipolaridade, TDAH e crises relacionais. Meu compromisso é proporcionar um espaço de escuta qualificada para que você possa superar desafios e resgatar sua qualidade de vida, onde quer que você esteja.</p>
 
-          <p><strong>CRP 07/46537</strong></p>
         </div>
 
       </div>
     </section>
     <section class="sobre" id="especializacao">
       <div class="container">
-        <div>
+        <div strong style='font-size: 22px;'>
           <h2>Especializações</h2>
           <p>•	Especialização em Psicologia Conjugal e Familiar: Dedicada a mediar conflitos e fortalecer os vínculos afetivos e familiares.</p>
           <p>•	Formação em Psicologia Analítica Junguiana e Especialização em Teoria e Psicoterapia Analítica: Uma abordagem que olha para o indivíduo de forma ampla e complexa, integrando os aspectos conscientes e inconscientes para promover o autoconhecimento profundo.</p>
@@ -273,14 +366,34 @@
     </section>
 
     <!-- ==========================================================
-         SEÇÃO 3 — ATENDIMENTO (o que você oferece)
-         Para adicionar mais um cartão, copie um bloco inteiro
-         <div class="cartao"> ... </div> e cole logo abaixo.
-         Dica: use 3 ou 6 cartões para a grade ficar alinhada.
+         SEÇÃO — ANÁLISE DE SONHOS
+         ✏️ Os textos abaixo são uma sugestão: ajuste com a Tâmara.
+         Foto: imagens/Atendimento.jpg
          ========================================================== -->
-    <section class="fundo-suave" id="atendimento">
+    <section class="sobre fundo-suave" id="sonhos">
       <div class="container">
-        <h2>Como posso ajudar</h2>
+
+        <div class="espaco-imagem quadro">
+          <img src="imagens/Atendimento.jpg" alt="Imagem ilustrando a análise de sonhos" onerror="this.remove()">
+        </div>
+
+        <div style='font-size: 22px;'>
+          <h2>Análise de sonhos</h2>
+
+          <p>Na Psicologia Analítica, os sonhos são uma das formas mais diretas de comunicação do inconsciente. Para Jung, eles não são apenas restos do dia: trazem imagens e símbolos que podem revelar aspectos de nós mesmos que ainda não conseguimos enxergar.</p>
+          <p>Na análise de sonhos, convido você a explorar suas imagens oníricas, relacionando-as com a sua história, os seus sentimentos e o momento de vida que está atravessando. Não existe um dicionário pronto de símbolos: cada sonho é único e só faz sentido a partir de quem o sonhou.</p>
+          <p>Esse trabalho amplia o autoconhecimento e contribui para o processo de individuação, e pode fazer parte da sua psicoterapia.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         SEÇÃO 3 — ATENDIMENTO
+         ========================================================== -->
+    <section id="atendimento">
+      <div class="container">
+        <h2>Como posso ajudar:</h2>
         <p>Atendimento para quem está passando por momentos como estes:</p>
 
         <div class="grade-tres">
@@ -309,23 +422,21 @@
 
 
     <!-- ==========================================================
-         SEÇÃO 4 — COMO FUNCIONA (passos em sequência)
-         Para adicionar um passo, copie um <li> inteiro.
-         A numeração (1, 2, 3...) é automática.
+         SEÇÃO 4 — COMO FUNCIONA
          ========================================================== -->
-    <section class="como-funciona" id="como-funciona">
-      <div class="container">
+    <section class="como-funciona fundo-suave" id="como-funciona">
+      <div class="container cor-texto">
         <div class="espaco-imagem quadro">
           <img src="imagens/ComoFunciona.jpg" alt="Consultório de psicologia" onerror="this.remove()">
         </div>
         <div>
-          <h2>Como funciona</h2>
+          <h2>Como funciona?</h2>
 
-        <ol class="passos">
+        <ol class="passos" >
           <li>
-            <div>
+            <div >
               <h3>Conversa inicial</h3>
-              <p>Você me conta o que a trouxe até aqui e tira suas dúvidas. Sem compromisso.</p>  <!-- ✏️ texto -->
+              <p>Agendamos um horário, sem compromisso, e você me conta o que a trouxe até aqui e tira suas dúvidas.</p>  <!-- ✏️ texto -->
             </div>
           </li>
           <li>
@@ -337,7 +448,7 @@
           <li>
             <div>
               <h3>Acompanhamento semanal</h3>
-              <p>Sessões de 60 minutos, por vídeo, no mesmo dia e horário.</p>
+              <p>Sessões de 50 minutos, por vídeo, no mesmo dia e horário.</p>
             </div>
           </li>
         </ol>
@@ -348,23 +459,86 @@
 
     <!-- ==========================================================
          SEÇÃO 5 — PERGUNTAS FREQUENTES
-         Para adicionar uma pergunta, copie um bloco <details> inteiro.
-         <summary> é a pergunta; o <p> é a resposta.
          ========================================================== -->
-    <section class="duvidas fundo-suave" id="duvidas">
-      <div class="container">
+    <section class="duvidas" id="duvidas">
+      <div class="container" strong style='font-size: 22px;'>
         <h2>Dúvidas frequentes</h2>
 
         <details>
-          <summary>Atende online?</summary>
-          <p>Sim. As sessões online acontecem por vídeo, com a mesma qualidade do atendimento presencial.</p>
+          <summary>O que eu vou falar na primeira consulta?</summary>
+          <p>Você não precisa de um roteiro. A primeira sessão (muitas vezes chamada de anamnese ou entrevista inicial) é um espaço de acolhimento. Irei conduzir a conversa de forma leve, perguntando o que te trouxe até aqui e entendendo a sua história. Se der branco ou se você ficar em silêncio, isso também é compreendido e acolhido. </p>
+        </details>
+
+        <details>
+          <summary>O psicólogo vai me julgar?</summary>
+          <p>O ambiente terapêutico é livre de julgamentos. Além disso, o sigilo profissional é uma regra ética obrigatória (garantida pelo Código de Ética dos Psicólogos), o que significa que tudo o que você disser na sessão é estritamente confidencial, salvo raríssimas exceções legais ligadas à preservação da vida. O mais importante é sentir empatia e confiança na relação com o terapeuta.</p>
+        </details>
+
+        <details>
+          <summary>Como eu sei se preciso mesmo de terapia?</summary>
+          <p>Você não precisa estar em uma crise profunda para buscar ajuda. A psicoterapia serve para lidar com transtornos (como ansiedade e depressão), mas também para autoconhecimento, fases de transição, estresse no trabalho, luto ou dificuldades nos relacionamentos.</p>
+        </details>
+
+        <details>
+          <summary>Quanto tempo vai durar o tratamento?</summary>
+          <p>Não há um prazo fixo; a duração varia conforme o seu quadro clínico, os seus objetivos e a abordagem do profissional (a minha abordagem é a analítica junguiana). Alguns processos são mais breves (focados em uma questão pontual), enquanto outros demandam um acompanhamento mais longo. A frequência costuma ser de uma sessão por semana. </p>
+        </details>
+
+        <details>
+          <summary>Como funciona a Abordagem Analítica Junguiana?</summary>
+          <p>A Psicologia Analítica (ou abordagem junguiana) é uma linha da psicoterapia fundada pelo psiquiatra suíço Carl Gustav Jung. O seu principal diferencial é a busca por compreender o inconsciente não apenas como um depósito de traumas reprimidos, mas como uma fonte rica de sabedoria, criatividade e potencial de cura.O objetivo central dessa abordagem é a individuação, que significa o processo de se tornar quem você realmente é, integrando todas as partes da sua mente (conscientes e inconscientes) para alcançar o equilíbrio emocional.</p>
+        </details>
+
+        <details>
+          <summary>Qual a diferença entre psicólogo e psiquiatra? Vou precisar tomar remédio?</summary>
+          <p>O psicólogo é o profissional graduado em Psicologia que trabalha com a psicoterapia (escuta, técnicas comportamentais e emocionais) e não prescreve remédios. O psiquiatra é médico e pode receitar medicação. Muitas vezes os dois tratamentos caminham juntos, mas iniciar a terapia não significa automaticamente que você usará remédios. </p>
         </details>
 
         <details>
           <summary>Aceita convênio?</summary>
-          <p>Saúde Caixa.</p>
-          <p>Fundação ASSEFAZ.</p>
+          <p>Sim: Saúde Caixa e Assefaz (entre em contato para consultar as regras dos convênios para autorização do procedimento)</p>
         </details>
+
+        <details>
+          <summary>Em caso de atendimento particular, emite nota fiscal?</summary>
+          <p>Sim. Emito nota fiscal para Declaração de Imposto de Renda e/ou, caso seu plano pratique a política do reembolso, as datas dos atendimentos são informadas na própria nota para facilitar o pedido.</p>
+        </details>
+      </div>
+    </section>
+
+
+    <!-- ==========================================================
+         SEÇÃO — AVALIAÇÕES 
+         ========================================================== -->
+    <section class="fundo-suave" id="avaliacoes">
+      <div class="container">
+        <h2>O que dizem os pacientes</h2>
+        <p>Avaliações de quem já passou pelo atendimento.</p>
+
+        <div class="carrossel-trilha" tabindex="0" role="region" aria-label="Avaliações de pacientes">
+          <div class="carrossel-slide"><img src="imagens/coment1.jpg" alt="Avaliação de paciente 1" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment2.jpg" alt="Avaliação de paciente 2" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment3.jpg" alt="Avaliação de paciente 3" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment4.jpg" alt="Avaliação de paciente 4" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment5.jpg" alt="Avaliação de paciente 5" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment6.jpg" alt="Avaliação de paciente 6" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment7.jpg" alt="Avaliação de paciente 7" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment8.jpg" alt="Avaliação de paciente 8" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment9.jpg" alt="Avaliação de paciente 9" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment10.jpg" alt="Avaliação de paciente 10" loading="lazy" onerror="this.remove()"></div>
+          <div class="carrossel-slide"><img src="imagens/coment11.jpg" alt="Avaliação de paciente 11" loading="lazy" onerror="this.remove()"></div>
+        </div>
+
+        <div class="carrossel-controles">
+          <button class="carrossel-seta anterior" type="button" aria-label="Avaliações anteriores">&#8249;</button>
+          <button class="carrossel-seta proximo" type="button" aria-label="Próximas avaliações">&#8250;</button>
+        </div>
+
+        <!-- Janela que mostra a avaliação em tamanho grande ao clicar -->
+        <dialog class="ampliada" aria-label="Avaliação ampliada">
+          <img src="" alt="">
+          <button class="ampliada-fechar" type="button">Fechar</button>
+        </dialog>
       </div>
     </section>
 
@@ -439,6 +613,57 @@
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') definir(false);
+      });
+    })();
+  </script>
+
+  <!-- SCRIPT DO CARROSSEL — não precisa mexer.
+       As setas rolam uma foto por vez. -->
+  <script>
+    (function () {
+      var trilha = document.querySelector('.carrossel-trilha');
+      var anterior = document.querySelector('.carrossel-seta.anterior');
+      var proximo = document.querySelector('.carrossel-seta.proximo');
+      if (!trilha || !anterior || !proximo) return;
+
+      function passo() {
+        var slide = trilha.querySelector('.carrossel-slide');
+        var espaco = parseFloat(getComputedStyle(trilha).columnGap) || 0;
+        return slide.getBoundingClientRect().width + espaco;
+      }
+
+      function mover(direcao) {
+        var reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        trilha.scrollBy({ left: direcao * passo(), behavior: reduzir ? 'auto' : 'smooth' });
+      }
+
+      anterior.addEventListener('click', function () { mover(-1); });
+      proximo.addEventListener('click', function () { mover(1); });
+
+      // Ampliar a foto ao clicar (ou ao apertar Enter com a foto selecionada)
+      var janela = document.querySelector('.ampliada');
+      if (!janela || typeof janela.showModal !== 'function') return;
+      var fotoGrande = janela.querySelector('img');
+
+      function abrir(img) {
+        fotoGrande.src = img.currentSrc || img.src;
+        fotoGrande.alt = img.alt;
+        janela.showModal();
+      }
+
+      trilha.querySelectorAll('img').forEach(function (img) {
+        img.tabIndex = 0;
+        img.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') abrir(img);
+        });
+      });
+      trilha.addEventListener('click', function (e) {
+        if (e.target.tagName === 'IMG') abrir(e.target);
+      });
+
+      janela.querySelector('.ampliada-fechar').addEventListener('click', function () { janela.close(); });
+      janela.addEventListener('click', function (e) {
+        if (e.target === janela) janela.close(); // clicar fora fecha
       });
     })();
   </script>
