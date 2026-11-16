@@ -185,6 +185,7 @@
     .contato p { margin-inline: auto; margin-bottom: 2rem; }
 
     footer { padding: 2rem 0; text-align: center; font-size: .9rem; color: var(--cor-texto-leve); }
+    footer p { margin-inline: auto; }
 
     @media (max-width: 960px) {
 
@@ -451,7 +452,6 @@
           <button class="carrossel-seta proximo" type="button" aria-label="Próximas avaliações">&#8250;</button>
         </div>
 
-        <!-- Janela que mostra a avaliação em tamanho grande ao clicar -->
         <dialog class="ampliada" aria-label="Avaliação ampliada">
           <img src="" alt="">
           <button class="ampliada-fechar" type="button">Fechar</button>
@@ -475,7 +475,8 @@
 
   <footer>
     <div class="container">
-      © 2026 Tâmara Mannis Psicóloga · CRP 07/46537
+      <p>© 2026 Tâmara Mannis Psicóloga · CRP 07/46537</p>
+      <p>Desenvolvido por <a href="https://www.instagram.com/jeffalves.dev/" target="_blank" rel="noopener">Jefferson Alves</a></p>
     </div>
   </footer>
 
@@ -528,8 +529,6 @@
     })();
   </script>
 
-  <!-- SCRIPT DO CARROSSEL — não precisa mexer.
-       As setas rolam uma foto por vez. -->
   <script>
     (function () {
       var trilha = document.querySelector('.carrossel-trilha');
@@ -551,7 +550,6 @@
       anterior.addEventListener('click', function () { mover(-1); });
       proximo.addEventListener('click', function () { mover(1); });
 
-      // Ampliar a foto ao clicar (ou ao apertar Enter com a foto selecionada)
       var janela = document.querySelector('.ampliada');
       if (!janela || typeof janela.showModal !== 'function') return;
       var fotoGrande = janela.querySelector('img');
