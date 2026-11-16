@@ -13,9 +13,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
   <style>
-    /* ==========================================================
-       1) CORES E FONTES — mude aqui e o site inteiro muda
-       ========================================================== */
     :root {
       --cor-fundo:       #f3eede;  /* fundo geral da página */
       --cor-fundo-suave: #5a6794;  /* seções alternadas */
@@ -28,9 +25,6 @@
       --fonte-texto:  "Figtree", system-ui, sans-serif;
     }
 
-    /* ==========================================================
-       2) ESTILO BASE — normalmente não precisa mexer daqui pra baixo
-       ========================================================== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -57,7 +51,6 @@
     section { padding: 5rem 0; }
     .fundo-suave { background: var(--cor-fundo-suave); }
 
-    /* Botão */
     .botao {
       display: inline-block;
       background: var(--cor-destaque);
@@ -70,11 +63,6 @@
     }
     .botao:hover { background: var(--cor-destaque-escura); }
 
-    /* ==========================================================
-       ESPAÇOS PARA IMAGENS
-       Cada .espaco-imagem é um "quadro". A imagem preenche o quadro.
-       Enquanto não houver foto, aparece só um fundo colorido.
-       ========================================================== */
     .espaco-imagem {
       background: var(--cor-fundo-suave);
       overflow: hidden;
@@ -109,7 +97,6 @@
     }
     .hero p { font-size: 1.15rem; margin: 1.2rem 0 2rem; }
 
-    /* Logo (primeira foto): para diminuir ou aumentar, mude o 360px */
     .hero .logo-hero { max-width: 360px; margin-bottom: 1.5rem; }
 
     .sobre .container,
@@ -123,7 +110,6 @@
     .grade-tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
     .cartao { background: var(--cor-fundo-suave); padding: 2rem; border-radius: 20px; }
 
-    /* Números dos passos (Como funciona): escuros para destacar */
     .passos { list-style: none; counter-reset: passo; margin-top: 2rem; display: grid; gap: 1.5rem; }
     .passos li { counter-increment: passo; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; }
     .passos li::before {
@@ -138,13 +124,6 @@
     summary { cursor: pointer; font-weight: 600; color: var(--cor-texto); }
     details p { margin-top: .7rem; }
 
-    /* ==========================================================
-       CARROSSEL DE AVALIAÇÕES
-       Rola na horizontal: com o dedo no celular, com as setas
-       (ou o mouse/teclado) no computador.
-       Cada caixa tem o tamanho exato da imagem dentro dela.
-       Para mudar a largura das fotos, altere o 300px.
-       ========================================================== */
     .carrossel-trilha {
       display: flex;
       align-items: flex-start;
@@ -165,7 +144,6 @@
     }
     .carrossel-slide img { width: 100%; height: auto; }
 
-    /* Foto ampliada ao clicar (tela cheia, fundo escurecido) */
     .ampliada {
       border: 0;
       background: transparent;
@@ -208,8 +186,6 @@
 
     footer { padding: 2rem 0; text-align: center; font-size: .9rem; color: var(--cor-texto-leve); }
 
-    /* Menu no celular e tablet pequeno (o menu tem muitos itens,
-       por isso vira "hambúrguer" já abaixo de 960px) */
     @media (max-width: 960px) {
 
       .menu-botao { display: block; }
@@ -225,7 +201,6 @@
       nav a { padding: .85rem 0; font-size: 1.05rem; border-bottom: 1px solid rgba(0, 0, 0, .1); }
     }
 
-    /* Celular */
     @media (max-width: 800px) {
 
       .hero .container, .sobre .container, .como-funciona .container, .grade-tres { grid-template-columns: 1fr; }
@@ -237,15 +212,6 @@
       section { padding: 3.5rem 0; }
     }
 
-    /* ==========================================================
-       ANIMAÇÃO AO ROLAR A PÁGINA
-       Cada seção aparece suavemente (sobe e ganha opacidade)
-       quando entra na tela. Para ajustar:
-         - velocidade: mude os .9s abaixo
-         - distância da subida: mude o 40px
-       A classe "js" só existe se o JavaScript funcionar; sem ele,
-       tudo aparece normalmente (nada fica escondido).
-       ========================================================== */
     .js .revelar {
       opacity: 0;
       transform: translateY(40px);
@@ -264,9 +230,6 @@
 
 <body>
 
-  <!-- ==========================================================
-       CABEÇALHO
-       ========================================================== -->
   <header>
     <div class="container">
       <button class="menu-botao" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
@@ -290,7 +253,6 @@
     <section class="hero" id="inicio">
       <div class="container">
         <div>
-          <!-- 🖼️ LOGO: fica acima do título -->
           <div class="espaco-imagem logo-hero">
             <img src="imagens/Logo.png" alt="Tâmara sorrindo no consultório" onerror="this.remove()">
           </div>
@@ -308,14 +270,9 @@
       </div>
     </section>
 
-
-    <!-- ==========================================================
-         SEÇÃO 2 — SOBRE
-         ========================================================== -->
     <section class="sobre fundo-suave" id="sobre">
       <div class="container">
 
-        <!-- 🖼️ IMAGEM: outra foto (consultório, retrato, detalhe do ambiente) -->
         <div class="espaco-imagem retangulo">
           <img src="imagens/SobreMim.jpg" alt="Consultório de psicologia" onerror="this.remove()">
         </div>
@@ -348,11 +305,6 @@
 
     </section>
 
-    <!-- ==========================================================
-         SEÇÃO — ANÁLISE DE SONHOS
-         ✏️ Os textos abaixo são uma sugestão: ajuste com a Tâmara.
-         Foto: imagens/Atendimento.jpg
-         ========================================================== -->
     <section class="sobre fundo-suave" id="sonhos">
       <div class="container">
 
@@ -371,9 +323,6 @@
       </div>
     </section>
 
-    <!-- ==========================================================
-         SEÇÃO 3 — ATENDIMENTO
-         ========================================================== -->
     <section id="atendimento">
       <div class="container">
         <h2>Como posso ajudar:</h2>
@@ -403,10 +352,6 @@
       </div>
     </section>
 
-
-    <!-- ==========================================================
-         SEÇÃO 4 — COMO FUNCIONA
-         ========================================================== -->
     <section class="como-funciona fundo-suave" id="como-funciona">
       <div class="container cor-texto">
         <div class="espaco-imagem quadro">
@@ -439,10 +384,6 @@
       </div>
     </section>
 
-
-    <!-- ==========================================================
-         SEÇÃO 5 — PERGUNTAS FREQUENTES
-         ========================================================== -->
     <section class="duvidas" id="duvidas">
       <div class="container" strong style='font-size: 22px;'>
         <h2>Dúvidas frequentes</h2>
@@ -526,9 +467,6 @@
     </section>
 
 
-    <!-- ==========================================================
-         SEÇÃO 6 — CONTATO
-         ========================================================== -->
     <section class="contato" id="contato">
       <div class="container">
         <h2>Vamos conversar?</h2>
@@ -542,9 +480,6 @@
 
   </main>
 
-  <!-- ==========================================================
-       RODAPÉ
-       ========================================================== -->
   <footer>
     <div class="container">
       © 2026 Tâmara Mannis Psicóloga · CRP 07/46537
